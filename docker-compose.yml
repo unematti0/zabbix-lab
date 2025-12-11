@@ -23,7 +23,6 @@ services:
       timeout: 5s
       retries: 5
       start_period: 60s
-
   zabbix-server:
     image: zabbix/zabbix-server-mysql:ubuntu-7.0.6
     container_name: zabbix-server
@@ -32,7 +31,6 @@ services:
       MYSQL_DATABASE: zabbix
       MYSQL_USER: zabbix
       MYSQL_PASSWORD: zabbix_pwd
-      MYSQL_ROOT_PASSWORD: root_pwd
       TZ: Europe/Tallinn
     ports:
       - "10051:10051"
@@ -58,7 +56,6 @@ services:
       MYSQL_DATABASE: zabbix
       MYSQL_USER: zabbix
       MYSQL_PASSWORD: zabbix_pwd
-      MYSQL_ROOT_PASSWORD: root_pwd
       PHP_TZ: Europe/Tallinn
       TZ: Europe/Tallinn
     ports:
@@ -69,14 +66,6 @@ services:
     depends_on:
       mysql-server:
         condition: service_healthy
-      zabbix-server:
-        condition: service_healthy
-    healthcheck:
-      test: ["CMD-SHELL", "curl -f http://localhost:8080 || exit 1"]
-      interval: 10s
-      timeout: 5s
-      retries: 10
-      start_period: 120s
 
   zabbix-agent:
     image: zabbix/zabbix-agent:ubuntu-7.0.6
